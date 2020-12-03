@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:tiles="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title th:text="${filter.getName()}"></title>
+</head>
+<body>
+	<div th:replace="navbar :: navbar"></div>
+	
+	<div class="row">
+	
+	<div class="col-lg-3">
+			<h1 class="my-4">My Filters</h1>
+			<div class="list-group">
+				<div th:each="userFilter : ${user.getFilters()}">
+					<a th:href="@{'/view_filter/' + ${userFilter.getId()}}"
+						th:text="${userFilter.getName()}" class="list-group-item"></a>
+				</div>
+					<a th:href="@{/new_filter}" class="list-group-item">New Filter</a>
+
+			</div>
+		</div>
+		
+	<div class="col-lg-9">
+
+			<div class="card mt-4">
+				<div class="card-body">
+					<h2 th:text="${filter.getName()}" class="card-title"></h2>
+				</div>
+			</div>
+
+			<div class="card card-outline-secondary my-4">
+				<div class="card-header">Filter Details</div>
+				<div class="card-body">
+					<h4>Cuisine</h4>
+					<h5 th:text="${filter.getCuisine()}"></h5>
+					<hr>
+					<h4>Type</h4>
+					<h5 th:text="${filter.getType()}"></h5>
+					<hr>
+					<h4>Minutes to Cook</h4>
+					<h5 th:text="${filter.getMinutes()}"></h5>
+					<hr>
+					
+					<h4 th:if="${!filter.getInclude().isEmpty()}">Ingredients to Include</h4>
+					<div th:each="ingredient, status : ${filter.getInclude()}">
+						<p th:text="${ingredient}"></p>
+						<hr>
+					</div>
+					
+					<h4 th:if="${!filter.getExclude().isEmpty()}">Ingredients to Exclude</h4>
+					<div th:each="ingredient, status : ${filter.getExclude()}">
+						<p th:text="${ingredient}"></p>
+						<hr>
+					</div>
+					
+					<h4>Only Favorites?</h4>
+					<h5 th:if="${filter.isFavorite()}">&#9733; Yes</h5>
+					<h5 th:unless="${filter.isFavorite()}">&#9733; No</h5>
+					<hr>
+					<a th:href="@{'/edit_filter/' + ${filter.getId()}}"
+						class="btn btn-success">Edit Filter</a>
+				</div>
+			</div>
+			
+	</div>
+	
+	</div>
+	<div th:replace="footer :: footer"></div>
+</body>
+</html>

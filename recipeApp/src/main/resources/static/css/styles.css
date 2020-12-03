@@ -1,0 +1,47 @@
+
+
+h4 {
+/* 	background-color: red; */
+}
+
+.cardwidth {
+	width:18rem;
+}
+
+.search-card {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.search-button {
+
+}
+
+.search-bar {
+	width: 90%;
+}
+
+.filterCheck {
+}
+
+.type-img {
+	height: 400px;
+	width: 700px;
+}
+
+.footer {
+
+}
+
+.login-custom {
+	margin-left: 25%;
+	margin-right: 25%;
+}
+
+.green-text {
+	color: green;
+}
+
+.red-text {
+	color: red;
+}

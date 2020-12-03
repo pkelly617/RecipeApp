@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:tiles="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title>My Filters</title>
+</head>
+<body>
+	<div th:replace="navbar :: navbar"></div>
+	<h1 th:text="${user.getUsername()} + '\'' + 's Filters'" class="jumbo"></h1>
+	<br/>
+	
+	<div class="col-lg-9">
+      
+    	<div class="row justify-content-center">
+        
+        <div class="col-lg-4 col-md-6 mb-4" th:each="filter : ${user.getFilters()}">
+
+
+				<div>
+					<div class="card h-100">
+<!-- 						<a href="#"><img class="card-img-top" -->
+<!-- 							src="http://placehold.it/700x400" alt=""></a> -->
+						<div class="card-body">
+							<h4 class="card-title">
+								<a th:href="@{'/view_filter/' + ${filter.id}}"
+									th:text="${filter.name}"></a>
+							</h4>
+							<h5 th:text="'Food Type: ' + ${filter.getType()}"></h5>
+							<h5 th:text="'Cuisine: ' + ${filter.getCuisine()}"></h5>
+							<h5 th:text="'Minutes to Cook: ' + ${filter.getMinutes()}"></h5>
+							<div th:if="${!filter.getInclude().isEmpty()}">
+							<p>Include</p>
+							<p
+								th:text="${filter.getInclude().toString().replace('[', '').replace(']', '')}"
+								class="card-text search-card"></p>
+							</div>
+							<div th:if="${!filter.getExclude().isEmpty()}">
+							<p>Exclude</p>
+							<p
+								th:text="${filter.getExclude().toString().replace('[', '').replace(']', '')}"
+								class="card-text search-card"></p>
+							</div>
+						</div>
+						<div class="card-footer">
+							<a th:href="@{'/edit_filter/' + ${filter.id}}"> Edit Filter</a>
+							<a th:href="@{'/remove_filter/' + ${filter.id}}"> Remove Filter</a>
+
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+        </div>
+        
+      </div>
+<div th:replace="footer :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+@GetMapping("/tester")
+	public String addRecipe2(Model modelRecipes) {
+		// object of Users
+		Recipe newRecipe = new Recipe();
+		
+		
+		// container for new user
+		modelRecipes.addAttribute("newRecipe", newRecipe);
+		
+		return "tester";
+	}
+	@RequestMapping(value="/tester", params={"addRow"})
+	public String addRow(@ModelAttribute("recipe") Recipe recipe, BindingResult bindingResult) {
+	    recipe.getIngredients().add(new String());
+	    return "tester";
+	}
+
+	@RequestMapping(value="/tester", params={"removeRow"})
+	public String removeRow(
+	        final Recipe recipe, final BindingResult bindingResult, 
+	        final HttpServletRequest req) {
+	    final Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
+	    //seedStarter.getRows().remove(rowId.intValue());
+	    recipe.removeIngredient("Milk");
+	    return "tester";
+	}
+	@PostMapping("saverecipe2")
+	public String saveRecipe2(@Valid @ModelAttribute("newRecipe") Recipe newRecipe, BindingResult bind) {
+	//newUser.toString();
+	
+			recipeService.save(newRecipe);
+		
+		return "redirect:/";
+	}
+	@GetMapping("/newrecipejs")
+	public String addRecipe3(Model modelRecipes) {
+		// object of Users
+		Recipe newRecipe = new Recipe();
+		newRecipe.setIngredients(new AutoPopulatingList<String>(String.class));
+		// container for new user
+		List<String> s = newRecipe.getIngredients();
+    	s.add("Milk");
+    	newRecipe.setIngredients(s);
+		modelRecipes.addAttribute("newRecipe", newRecipe);
+		
+		return "newrecipejs";
+	}
+	@PostMapping("saverecipe3")
+	public String saveRecipe3(@Valid @ModelAttribute("newRecipe") Recipe newRecipe, BindingResult bind) {
+	//newUser.toString();
+	
+			recipeService.save(newRecipe);
+		
+		return "redirect:/";
+	}
+	@RequestMapping(value = "add")
+    public String add(Recipe subjectGroup) {
+    return "newrecipejs/add";
+    }
+	
+
+    @RequestMapping(value = "saverecipe3", params="addOption", method = RequestMethod.POST)
+    public String addOption(@ModelAttribute("newRecipe") Recipe subjectGroup, BindingResult result) {
+    	List<String> s = subjectGroup.getIngredients();
+    	s.add("Milk");
+    	subjectGroup.setIngredients(s);
+    	System.out.println(subjectGroup.getIngredients().get(0));
+    //subjectGroup.getOptions().add(new SubjectGroupOption());
+    return "newrecipejs";
+    }
+
+    @PostMapping(value = "add")
+    public String save(Recipe subjectGroup, BindingResult result) {
+    //this.subjectGroupService.save(subjectGroup);
+    return "redirect:/sg/add";
+    }

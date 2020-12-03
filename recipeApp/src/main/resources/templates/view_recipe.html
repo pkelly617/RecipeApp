@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:tiles="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title th:text="${recipe.getTitle()}">Recipe</title>
+</head>
+<body>
+	<div th:replace="navbar :: navbar"></div>
+
+	<div class="row">
+
+		<div class="col-lg-3">
+			<h1 class="my-4">My Recipes</h1>
+			<div class="list-group">
+				<div th:each="userRecipe : ${user.getRecipes()}">
+					<a th:href="@{'/view_recipe/' + ${userRecipe.getId()}}"
+						th:text="${userRecipe.getTitle()}" class="list-group-item"></a>
+				</div>
+					<a th:href="@{/new_recipe}" class="list-group-item">New Recipe</a>
+
+			</div>
+		</div>
+
+		<div class="col-lg-9">
+
+			<div class="card mt-4">
+				<div class="card-body">
+					<h2 th:text="${recipe.getTitle()}" class="card-title"></h2>
+					<h4 th:text="${recipe.getType()}"></h4>
+					<h5 th:if="${recipe.isFavorite()}">&#9733; Favorite</h5>
+				</div>
+			</div>
+
+			<div class="card card-outline-secondary my-4">
+				<div class="card-header">Recipe Details</div>
+				<div class="card-body">
+					<h5>Ingredients</h5>
+					<div th:each="ingredient, status : ${recipe.getIngredients()}">
+						<p th:text="${ingredient}"></p>
+						<hr>
+					</div>
+					<h5>Instructions</h5>
+					<div th:each="step, status : ${recipe.getInstructions()}">
+						<p th:text="${status.index + 1}"></p>
+						<p th:text="${step}"></p>
+						<hr>
+					</div>
+					<h5>Cuisine</h5>
+					<p th:text="${recipe.getCuisine()}"></p>
+					<hr>
+					<a th:if="${user.getRecipes().contains(recipe)}" th:href="@{'/edit_recipe/' + ${recipe.getId()}}"
+						class="btn btn-success">Edit Recipe</a>
+					<a th:if="${!user.getRecipes().contains(recipe)}" th:href="@{'/add_recipe/' + ${recipe.getId()}}"
+						class="btn btn-success">Add Recipe</a>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+<div th:replace="footer :: footer"></div>
+</body>
+</html>
